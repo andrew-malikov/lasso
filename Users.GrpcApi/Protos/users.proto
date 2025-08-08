@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "Users.GrpcApi";
+
+import "google/protobuf/empty.proto";
+
+package Users;
+
+service Users {
+  rpc Register (RegisterUserRequest) returns (google.protobuf.Empty);
+}
+
+message RegisterUserRequest {
+  string username = 1;
+  string password = 2;
+}

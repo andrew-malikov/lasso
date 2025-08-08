@@ -1,0 +1,23 @@
+﻿services:
+  users.grpcapi:
+    image: users.grpcapi
+    build:
+      context: .
+      dockerfile: Users.GrpcApi/Dockerfile
+    environment:
+      "UsersDbContext": "Host=db;Database=users;Username=sudome;Password=superpass"
+
+  db:
+    image: postgres:17.5-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: superpass
+      POSTGRES_USER: sudome
+      POSTGRES_PASSWORD: sudome
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
