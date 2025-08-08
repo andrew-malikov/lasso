@@ -12,9 +12,9 @@ public class UsersDbContext(DbContextOptions<UsersDbContext> options) : DbContex
         {
             b.ToTable("users");
             b.HasKey(p => p.Id);
-            b.Property(p => p.Username).HasMaxLength(40);
+            b.Property(p => p.Username).HasMaxLength(60);
             b.HasIndex(u => u.Username).IsUnique().HasDatabaseName("users_username_idx");
-            b.Property(p => p.Password).HasMaxLength(128);
+            b.Property(p => p.Password).HasMaxLength(40);
         });
     }
 }

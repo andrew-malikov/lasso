@@ -5,7 +5,7 @@ using Users.GrpcApi.Api;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContextPool<UsersDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("UsersDbContext"))
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("UsersDbContext"), x => x.MigrationsAssembly("Users.Db"))
         .UseSnakeCaseNamingConvention());
 
 builder.Services.AddGrpc();

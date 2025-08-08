@@ -1,4 +1,4 @@
-namespace Users.WebApi.Domain;
+namespace Users.GrpcApi.Domain;
 
 public class UserTokens
 {

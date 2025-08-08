@@ -1,4 +1,4 @@
-namespace Users.WebApi.Application;
+namespace Users.GrpcApi.Application;
 
 public class JwtSettings
 {

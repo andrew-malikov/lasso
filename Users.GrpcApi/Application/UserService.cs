@@ -1,9 +1,9 @@
 using System.Data.Common;
 using Medo;
 using Microsoft.AspNetCore.Identity;
-using Users.WebApi.Domain;
+using Users.GrpcApi.Domain;
 
-namespace Users.WebApi.Application;
+namespace Users.GrpcApi.Application;
 
 public class UserService(
     IUserRepository repository,
