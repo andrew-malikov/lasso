@@ -8,16 +8,8 @@ public class UsersDbContextDesignTimeFactory : IDesignTimeDbContextFactory<Users
     public UsersDbContext CreateDbContext(string[] args)
     {
         var builder = new DbContextOptionsBuilder<UsersDbContext>();
-
         var connectionString = Environment.GetEnvironmentVariable("UsersDbContext");
-        if (connectionString is null)
-        {
-            throw new InvalidOperationException(
-                "Failed to retrieve the connection string. Environment variable 'UsersDbContext' is not set.");
-        }
-
-        builder.UseNpgsql(connectionString).UseSnakeCaseNamingConvention();
-
+        builder.UseNpgsql(connectionString ?? "don't need one").UseSnakeCaseNamingConvention();
         return new UsersDbContext(builder.Options);
     }
 }

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "Finance.Grpc.Currency";
+
+import "google/protobuf/empty.proto";
+
+package currency;
+
+service CurrencyService {
+  rpc GetFavorites (google.protobuf.Empty) returns (CurrenciesResponse);
+}
+
+message CurrenciesResponse {
+  repeated CurrencyResponse currencies = 1;
+}
+
+message CurrencyResponse {
+  string id = 1;
+  string name = 2;
+  string rate = 3;
+}
+

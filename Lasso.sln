@@ -10,11 +10,20 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F7AC5EC6-0F9E-4CC2-8C3D-3AE2BDED8FD8}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.WebApi", "ApiGateway.WebApi\ApiGateway.WebApi.csproj", "{5D8105F6-6803-4459-B10B-1310A8825F72}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Grpc", "Users.Grpc\Users.Grpc.csproj", "{41D5620F-066A-4711-85BC-C2502A532770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.CurrencyUpdater", "Finance.CurrencyUpdater\Finance.CurrencyUpdater.csproj", "{1E0DD853-570D-4356-B61A-8F8D58E773F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.WebApi", "Finance.WebApi\Finance.WebApi.csproj", "{A1B97417-B4E9-4938-B21B-C87873803FFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Db", "Finance.Db\Finance.Db.csproj", "{B330EEB1-7CA8-48D6-9704-E0AFDD7C341D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Grpc", "Finance.Grpc\Finance.Grpc.csproj", "{40CEC768-AA7A-4710-BEE8-A56511EAD983}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,5 +50,21 @@ Global
 		{41D5620F-066A-4711-85BC-C2502A532770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41D5620F-066A-4711-85BC-C2502A532770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41D5620F-066A-4711-85BC-C2502A532770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E0DD853-570D-4356-B61A-8F8D58E773F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0DD853-570D-4356-B61A-8F8D58E773F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0DD853-570D-4356-B61A-8F8D58E773F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0DD853-570D-4356-B61A-8F8D58E773F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B97417-B4E9-4938-B21B-C87873803FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B97417-B4E9-4938-B21B-C87873803FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B97417-B4E9-4938-B21B-C87873803FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B97417-B4E9-4938-B21B-C87873803FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B330EEB1-7CA8-48D6-9704-E0AFDD7C341D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B330EEB1-7CA8-48D6-9704-E0AFDD7C341D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B330EEB1-7CA8-48D6-9704-E0AFDD7C341D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B330EEB1-7CA8-48D6-9704-E0AFDD7C341D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

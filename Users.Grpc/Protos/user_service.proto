@@ -8,7 +8,7 @@ package user;
 
 service UserService {
   rpc Register (RegisterUserRequest) returns (google.protobuf.Empty);
-  rpc Login (LoginRequest) returns (UserTokensReply);
+  rpc Login (LoginRequest) returns (UserTokensResponse);
   rpc Logout (LogoutRequest) returns (google.protobuf.Empty);
 }
 
@@ -22,7 +22,7 @@ message LoginRequest {
   string password = 2;
 }
 
-message UserTokensReply {
+message UserTokensResponse {
   string access_token = 1;
   string refresh_token = 2;
 }
