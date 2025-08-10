@@ -1,5 +1,16 @@
 ﻿services:
-  users.grpcapi:
+  api_gateway:
+    image: api_gateway
+    build:
+      context: .
+      dockerfile: ApiGateway.WebApi/Dockerfile
+    environment:
+      UserGrpc__Address: https://users.webapi
+      FinanceGrpc_Address: https://finance.webapi
+    ports:
+      - "8080:8080"
+  
+  users.webapi:
     image: users.grpcapi
     build:
       context: .

@@ -1,7 +1,7 @@
 using Users.Db;
-using Users.GrpcApi.Domain;
+using Users.WebApi.Domain;
 
-namespace Users.GrpcApi.Application;
+namespace Users.WebApi.Application;
 
 public class UserRepository : IUserRepository
 {

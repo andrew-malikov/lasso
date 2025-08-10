@@ -2,9 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Users.GrpcApi.Domain;
+using Users.WebApi.Domain;
 
-namespace Users.GrpcApi.Application;
+namespace Users.WebApi.Application;
 
 public class JwtTokenFactory(JwtSettings jwtSettings) : ITokenFactory
 {
