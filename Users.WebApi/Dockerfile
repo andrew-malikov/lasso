@@ -7,18 +7,19 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Users.GrpcApi/Users.GrpcApi.csproj", "Users.GrpcApi/"]
+COPY ["Users.WebApi/Users.WebApi.csproj", "Users.WebApi/"]
 COPY ["Users.Db/Users.Db.csproj", "Users.Db/"]
-RUN dotnet restore "Users.GrpcApi/Users.GrpcApi.csproj"
+COPY ["Users.Grpc/Users.Grpc.csproj", "Users.Grpc/"]
+RUN dotnet restore "Users.WebApi/Users.WebApi.csproj"
 COPY . .
-WORKDIR "/src/Users.GrpcApi"
-RUN dotnet build "./Users.GrpcApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Users.WebApi"
+RUN dotnet build "./Users.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Users.GrpcApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Users.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Users.GrpcApi.dll"]
+ENTRYPOINT ["dotnet", "Users.WebApi.dll"]

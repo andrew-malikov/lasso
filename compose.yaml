@@ -11,10 +11,10 @@
       - "8080:8080"
   
   users.webapi:
-    image: users.grpcapi
+    image: users.webapi
     build:
       context: .
-      dockerfile: Users.GrpcApi/Dockerfile
+      dockerfile: Users.WebApi/Dockerfile
     environment:
       UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
     depends_on:
