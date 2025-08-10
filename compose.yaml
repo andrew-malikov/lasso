@@ -5,21 +5,33 @@
       context: .
       dockerfile: Users.GrpcApi/Dockerfile
     environment:
-      "UsersDbContext": "Host=db;Database=users;Username=sudome;Password=superpass"
+      UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
+    depends_on:
+      - db
+
+  db.migrator:
+    image: users.db.migrator
+    restart: on-failure:3
+    build:
+      context: .
+      dockerfile: Users.Db/Dockerfile
+    environment:
+      UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
     depends_on:
       - db
 
   db:
-    image: "postgres:17-alpine"
+    image: postgres:17-alpine
     restart: always
     environment:
-      POSTGRES_DB: superpass
+      POSTGRES_DBS: "users, finance"
       POSTGRES_USER: sudome
-      POSTGRES_PASSWORD: sudome
+      POSTGRES_PASSWORD: superpass
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./create-postgres-dbs.sh:/docker-entrypoint-initdb.d/create-postgres-dbs.sh
 
 volumes:
   postgres_data:

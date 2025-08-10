@@ -5,8 +5,13 @@ RUN dotnet restore "Users.Db/Users.Db.csproj"
 COPY [".config/dotnet-tools.json", ".config/dotnet-tools.json"]
 RUN dotnet tool restore
 COPY ["Users.Db", "Users.Db"]
-RUN dotnet ef migrations bundle --self-contained -r linux-x64 --project Users.Db
+ENV UsersDbContext=none
+RUN dotnet ef migrations bundle --self-contained -r linux-x64 --project Users.Db -o ./bin/efbundle
 
-FROM alpine:3.22 as migrator
-COPY --from=build /src/efbundle .
-ENTRYPOINT ["efbundle", "--connection", "${UsersDbContext}"]
+FROM ubuntu:24.10 as migrator
+RUN apt update -y && apt install -y libicu-dev 
+WORKDIR /migrator
+COPY --from=build /src/bin .
+COPY --from=build /src/Users.Db/appsettings.json .
+RUN chmod +x ./efbundle
+CMD ["sh", "-c", "cd /migrator && ./efbundle --connection ${UsersDbContext}"]
