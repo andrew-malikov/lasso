@@ -12,6 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="../Finance.Grpc/Finance.Grpc.csproj"/>
+        <ProjectReference Include="..\Finance.Db\Finance.Db.csproj" />
     </ItemGroup>
 
 </Project>

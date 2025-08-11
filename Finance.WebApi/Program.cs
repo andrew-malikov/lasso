@@ -1,4 +1,4 @@
-using Finance.WebApi.Services;
+using Finance.WebApi.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
