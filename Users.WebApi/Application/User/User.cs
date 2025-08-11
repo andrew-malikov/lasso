@@ -1,4 +1,4 @@
-namespace Users.WebApi.Domain;
+namespace Users.WebApi.Application.User;
 
 public class User(Guid id, string username, string password, string salt)
 {

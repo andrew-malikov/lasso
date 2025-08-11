@@ -23,6 +23,8 @@ builder.Services
     });
 
 builder.Services.AddGrpc();
+
 var app = builder.Build();
+
 app.MapGrpcService<CurrencyService>();
 app.Run();

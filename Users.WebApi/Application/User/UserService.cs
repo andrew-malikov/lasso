@@ -1,44 +1,35 @@
-using System.Data.Common;
+using System.Security.Cryptography;
 using Medo;
 using Microsoft.AspNetCore.Identity;
-using Users.WebApi.Domain;
+using Users.WebApi.Application.Authentication;
 
-namespace Users.WebApi.Application;
+namespace Users.WebApi.Application.User;
 
 public class UserService(
     IUserRepository repository,
     IPasswordHasher<User> hasher,
     IPasswordHasher<UserDraft> draftHasher,
-    ITokenFactory tokenFactory,
-    ILogger<UserService> logger) : IUserService
+    ITokenFactory tokenFactory) : IUserService
 {
-    public async Task Register(UserDraft draft)
+    public async Task Register(UserDraft draft, CancellationToken token = default)
     {
-        // first: validate the draft
+        draft.Validate();
 
-        var isUsernameTaken = !await repository.Any(draft.Username);
+        var isUsernameTaken = await repository.Any(draft.Username, token);
         if (isUsernameTaken)
         {
-            throw new NotImplementedException();
+            throw new DuplicateUserException(draft.Username);
         }
 
-        var salt = "generated_salt";
+        var salt = Salt.GenerateEncoded();
         var passwordHash = draftHasher.HashPassword(draft, draft.Password + salt);
         var user = new User(Uuid7.NewGuid(), draft.Username, passwordHash, salt);
-        try
-        {
-            await repository.Add(user);
-        }
-        // todo: check the constraint/ index error
-        catch (DbException)
-        {
-            throw new NotImplementedException();
-        }
+        await repository.Add(user, token);
     }
 
-    public async Task<UserTokens> Login(LoginRequest request)
+    public async Task<UserTokens> Login(LoginRequest request, CancellationToken token = default)
     {
-        var user = await repository.Get(request.Username);
+        var user = await repository.Get(request.Username, token);
         if (user is null)
         {
             throw new NotImplementedException();
@@ -57,9 +48,19 @@ public class UserService(
         };
     }
 
-    public Task Logout()
+    public Task Logout(string refreshToken, CancellationToken token)
     {
         // remove all refresh tokens
         return Task.CompletedTask;
+    }
+}
+
+internal static class Salt
+{
+    public static string GenerateEncoded(int size = 32)
+    {
+        var salt = new byte[size];
+        RandomNumberGenerator.Fill(salt);
+        return Convert.ToBase64String(salt);
     }
 }

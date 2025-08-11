@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Users.WebApi.Domain;
+namespace Users.WebApi.Application.User;
 
 public record LoginRequest
 {

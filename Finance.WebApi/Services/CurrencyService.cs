@@ -16,7 +16,7 @@ public class CurrencyService(FinanceDbContext dbContext) : CurrencyServiceBase
     {
         var currencies = await dbContext.Currencies
             .AsNoTracking()
-            .Select(c => new CurrencyResponse()
+            .Select(c => new CurrencyResponse
             {
                 Id = c.Id,
                 Name = c.Name,
