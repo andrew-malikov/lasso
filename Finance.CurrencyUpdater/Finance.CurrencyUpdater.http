@@ -1,6 +1,0 @@
-@Finance.CurrencyUpdater_HostAddress = http://localhost:5211
-
-GET {{Finance.CurrencyUpdater_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
