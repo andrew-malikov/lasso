@@ -8,11 +8,12 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.19"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="../Finance.Grpc/Finance.Grpc.csproj"/>
-        <ProjectReference Include="..\Finance.Db\Finance.Db.csproj" />
+        <ProjectReference Include="..\Finance.Db\Finance.Db.csproj"/>
     </ItemGroup>
 
 </Project>

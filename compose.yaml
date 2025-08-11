@@ -17,10 +17,15 @@
       dockerfile: Users.WebApi/Dockerfile
     environment:
       UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
+      Authentication__VerifyingCertificate: "/app/certificates/verifying.pem"
+      Authentication__SigningCertificate__Path: "/app/certificates/signing.pfx"
+      Authentication__SigningCertificate__Password: "password"
+    volumes:
+      - ./certificates:/app/certificates:ro
     depends_on:
       - db
 
-  db.migrator:
+  db.users.migrator:
     image: users.db.migrator
     restart: on-failure:3
     build:
@@ -28,6 +33,30 @@
       dockerfile: Users.Db/Dockerfile
     environment:
       UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
+    depends_on:
+      - db
+
+  finance.webapi:
+    image: finance.webapi
+    build:
+      context: .
+      dockerfile: Finance.WebApi/Dockerfile
+    environment:
+      FinanceDbContext: Host=db;Database=finance;Username=sudome;Password=superpass
+      Authentication__VerifyingCertificate: "/app/certificates/verifying.pem"
+    volumes:
+      - ./certificates:/app/certificates:ro
+    depends_on:
+      - db
+
+  db.finance.migrator:
+    image: finance.db.migrator
+    restart: on-failure:3
+    build:
+      context: .
+      dockerfile: Finance.Db/Dockerfile
+    environment:
+      FinanceDbContext: Host=db;Database=finance;Username=sudome;Password=superpass
     depends_on:
       - db
 
