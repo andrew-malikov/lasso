@@ -12,8 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 		readme.md = readme.md
 		certificates\gen_certs.sh = certificates\gen_certs.sh
-		certificates\auth_siging.pfx = certificates\auth_siging.pfx
 		certificates\auth_verifying.pem = certificates\auth_verifying.pem
+		certificates\auth_signing.pfx = certificates\auth_signing.pfx
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway.WebApi", "ApiGateway.WebApi\ApiGateway.WebApi.csproj", "{5D8105F6-6803-4459-B10B-1310A8825F72}"
