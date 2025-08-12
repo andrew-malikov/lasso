@@ -6,5 +6,5 @@ public interface ITokenFactory
 {
     string CreateAccessToken(User user);
 
-    string CreateRefreshToken(User user);
+    (string token, DateTimeOffset expiresAt) CreateRefreshToken(User user);
 }

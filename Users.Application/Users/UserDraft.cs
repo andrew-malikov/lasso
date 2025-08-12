@@ -21,18 +21,15 @@ public class UserDraft
     /// <summary>
     ///     Validates whether the draft data meets the criteria.
     /// </summary>
-    /// <exception cref="ValidationException">The draft is invalid.</exception>
-    public void Validate()
+    public ValidationException? Validate()
     {
         var context = new ValidationContext(this);
         var results = new List<ValidationResult>();
 
         if (Validator.TryValidateObject(this, context, results, validateAllProperties: true))
-            return;
+            return null;
 
         var errors = results.Select(r => r.ErrorMessage).ToList();
-        throw new ValidationException(
-            $"Validation failed: {string.Join(", ", errors)}"
-        );
+        return new ValidationException($"Validation failed: {string.Join(", ", errors)}");
     }
 }

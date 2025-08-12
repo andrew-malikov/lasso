@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -10,6 +11,8 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddUserServices(this IServiceCollection services)
     {
+        services.AddSingleton<IPasswordHasher<UserDraft>, PasswordHasher<UserDraft>>();
+        services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
         return services.AddTransient<IUserService, UserService>();
     }
 
@@ -19,6 +22,7 @@ public static class DependencyInjectionExtensions
         services.AddTransient<IConfigureOptions<AuthenticationSettings>, AuthenticationSettingsBinder>(_ =>
             new AuthenticationSettingsBinder(configuration));
         services.AddSingleton<ITokenFactory, JwtTokenFactory>();
+        services.AddSingleton<ITokenCache, DistributedTokenCache>();
         return services;
     }
 }

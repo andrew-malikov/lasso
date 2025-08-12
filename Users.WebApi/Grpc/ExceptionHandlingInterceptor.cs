@@ -1,7 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Users.Application.Users;
 
 namespace Users.WebApi.Grpc;
 
@@ -15,14 +13,6 @@ public class ExceptionHandlingInterceptor(ILogger<ExceptionHandlingInterceptor> 
         try
         {
             return await continuation(request, context);
-        }
-        catch (ValidationException ex)
-        {
-            throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
-        }
-        catch (DuplicateUserException ex)
-        {
-            throw new RpcException(new Status(StatusCode.AlreadyExists, ex.Message));
         }
         catch (Exception ex)
         {

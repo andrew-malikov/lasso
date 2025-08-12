@@ -34,7 +34,7 @@ public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : IT
         return TokenHandler.WriteToken(token);
     }
 
-    public string CreateRefreshToken(User user)
+    public (string token, DateTimeOffset expiresAt) CreateRefreshToken(User user)
     {
         var claims = new List<Claim>(2 + authenticationSettings.Audience.Length)
         {
@@ -47,15 +47,16 @@ public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : IT
             claims.Add(new(JwtRegisteredClaimNames.Aud, audience));
         }
 
+        var expiresAt = DateTime.UtcNow.Add(authenticationSettings.RefreshTokenExpiration);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.Add(authenticationSettings.RefreshTokenExpiration),
+            Expires = expiresAt,
             Issuer = authenticationSettings.Issuer,
             SigningCredentials = new X509SigningCredentials(authenticationSettings.SigningCertificate)
         };
 
         var token = TokenHandler.CreateToken(tokenDescriptor);
-        return TokenHandler.WriteToken(token);
+        return (TokenHandler.WriteToken(token), expiresAt);
     }
 }
