@@ -5,8 +5,8 @@
       context: .
       dockerfile: ApiGateway.WebApi/Dockerfile
     environment:
-      UserGrpc__Address: https://users.webapi
-      FinanceGrpc_Address: https://finance.webapi
+      UserGrpc__Address: http://users.webapi:8080
+      FinanceGrpc_Address: http://finance.webapi:8080
     ports:
       - "8080:8080"
   
@@ -24,6 +24,8 @@
       - ./certificates:/app/certificates:ro
     depends_on:
       - db
+    expose:
+      - 8080
 
   db.users.migrator:
     image: users.db.migrator
@@ -48,6 +50,8 @@
       - ./certificates:/app/certificates:ro
     depends_on:
       - db
+    expose:
+      - 8080
 
   db.finance.migrator:
     image: finance.db.migrator

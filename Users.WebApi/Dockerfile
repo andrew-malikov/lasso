@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Users.WebApi/Users.WebApi.csproj", "Users.WebApi/"]
+COPY ["Users.Application/Users.Application.csproj", "Users.Application/"]
 COPY ["Users.Db/Users.Db.csproj", "Users.Db/"]
 COPY ["Users.Grpc/Users.Grpc.csproj", "Users.Grpc/"]
 RUN dotnet restore "Users.WebApi/Users.WebApi.csproj"
