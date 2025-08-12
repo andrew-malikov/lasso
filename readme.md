@@ -31,7 +31,13 @@ separte runnable services. Check the docker files and compose.
 docker compose up --build --force-recreate
 ```
 
+And head directly to `http//localhost:8080/swagger` to try endpoints. That thing is API gateway and it handovers requests to GRPC microservices.
+Call to register a user at first, `/api/users/register` and then get the tokens via `/api/users/login`. Grab the `access_token` and proceed to `/api/currencies/favourites`. After all the steps hit `/api/users/logout` with the refresh token.
+That's all.
+
 ### Manually
+
+Well, you'll need to do a lot. I don't have time to write it all down. 
 
 # License
 

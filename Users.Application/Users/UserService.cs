@@ -6,8 +6,7 @@ namespace Users.Application.Users;
 
 public class UserService(
     IUserRepository repository,
-    IPasswordHasher<User> hasher,
-    IPasswordHasher<UserDraft> draftHasher,
+    IPasswordHasher<object> hasher,
     ITokenFactory tokenFactory,
     ITokenCache tokenCache) : IUserService
 {
@@ -25,7 +24,7 @@ public class UserService(
             return new DuplicateUser { Message = $"Username '{draft.Username}' is already taken." };
         }
 
-        var passwordHash = draftHasher.HashPassword(draft, draft.Password);
+        var passwordHash = hasher.HashPassword(draft, draft.Password);
         var user = new User(Uuid7.NewGuid(), draft.Username, passwordHash);
         try
         {

@@ -11,8 +11,7 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddUserServices(this IServiceCollection services)
     {
-        services.AddSingleton<IPasswordHasher<UserDraft>, PasswordHasher<UserDraft>>();
-        services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
+        services.AddSingleton<IPasswordHasher<object>, PasswordHasher<object>>();
         return services.AddTransient<IUserService, UserService>();
     }
 
