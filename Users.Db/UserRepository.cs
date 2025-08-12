@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Users.Db;
+using Users.Application.Users;
 
-namespace Users.WebApi.Application.User;
+namespace Users.Db;
 
 public class UserRepository(UsersDbContext dbContext) : IUserRepository
 {

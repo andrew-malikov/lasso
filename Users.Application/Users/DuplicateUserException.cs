@@ -1,4 +1,4 @@
-namespace Users.WebApi.Application.User;
+namespace Users.Application.Users;
 
 public class DuplicateUserException : Exception
 {

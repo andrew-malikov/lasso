@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Db", "Finance.Db\Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finance.Grpc", "Finance.Grpc\Finance.Grpc.csproj", "{40CEC768-AA7A-4710-BEE8-A56511EAD983}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Application", "Users.Application\Users.Application.csproj", "{3745C473-DB5A-444C-80B4-CBCA2C30D427}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,5 +71,9 @@ Global
 		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40CEC768-AA7A-4710-BEE8-A56511EAD983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3745C473-DB5A-444C-80B4-CBCA2C30D427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3745C473-DB5A-444C-80B4-CBCA2C30D427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3745C473-DB5A-444C-80B4-CBCA2C30D427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3745C473-DB5A-444C-80B4-CBCA2C30D427}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

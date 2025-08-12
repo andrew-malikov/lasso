@@ -1,21 +1,22 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using Users.Application.Users;
 
-namespace Users.WebApi.Application.Authentication;
+namespace Users.Application.Jwt;
 
 public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : ITokenFactory
 {
     private static readonly JwtSecurityTokenHandler TokenHandler = new();
 
-    public string CreateAccessToken(User.User user)
+    public string CreateAccessToken(User user)
     {
         var claims = new List<Claim>(2 + authenticationSettings.Audience.Length)
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
-        
+
         foreach (var audience in authenticationSettings.Audience)
         {
             claims.Add(new(JwtRegisteredClaimNames.Aud, audience));
@@ -33,14 +34,14 @@ public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : IT
         return TokenHandler.WriteToken(token);
     }
 
-    public string CreateRefreshToken(User.User user)
+    public string CreateRefreshToken(User user)
     {
         var claims = new List<Claim>(2 + authenticationSettings.Audience.Length)
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
-        
+
         foreach (var audience in authenticationSettings.Audience)
         {
             claims.Add(new(JwtRegisteredClaimNames.Aud, audience));

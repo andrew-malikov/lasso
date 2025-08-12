@@ -1,9 +1,8 @@
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Users.Application;
 using Users.Db;
-using Users.WebApi.Application;
 using Users.WebApi.Grpc;
 using Users.WebApi.Services;
 
@@ -26,10 +25,9 @@ builder.Services
         };
     });
 
-builder.Services.AddDbContextPool<UsersDbContext>(opt =>
-    opt.UseNpgsql(builder.Configuration.GetConnectionString("UsersDbContext"), x => x.MigrationsAssembly("Users.Db"))
-        .UseSnakeCaseNamingConvention());
 
+builder.Services.AddJwtServices(builder.Configuration.GetRequiredSection("Authentication"));
+builder.Services.AddUserPersistence(builder.Configuration);
 builder.Services.AddUserServices();
 builder.Services.AddAuthorization();
 builder.Services.AddGrpc(o => { o.Interceptors.Add<ExceptionHandlingInterceptor>(); });

@@ -1,6 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 
-namespace Users.WebApi.Application.Authentication;
+namespace Users.Application.Jwt;
 
 public class AuthenticationSettings
 {

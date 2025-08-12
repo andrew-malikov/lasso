@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
-using Users.WebApi.Application.User;
+using Users.Application.Users;
 
 namespace Users.WebApi.Grpc;
 

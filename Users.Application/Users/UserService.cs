@@ -1,9 +1,9 @@
 using System.Security.Cryptography;
 using Medo;
 using Microsoft.AspNetCore.Identity;
-using Users.WebApi.Application.Authentication;
+using Users.Application.Jwt;
 
-namespace Users.WebApi.Application.User;
+namespace Users.Application.Users;
 
 public class UserService(
     IUserRepository repository,
@@ -35,7 +35,7 @@ public class UserService(
             throw new NotImplementedException();
         }
 
-        var result = hasher.VerifyHashedPassword(user, request.Password + "generated_salt", user.Password);
+        var result = hasher.VerifyHashedPassword(user, request.Password + user.Salt, user.Password);
         if (result == PasswordVerificationResult.Failed)
         {
             throw new NotImplementedException();
