@@ -19,6 +19,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddJwtServices(this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddOptions<AuthenticationSettings>();
         services.AddTransient<IConfigureOptions<AuthenticationSettings>, AuthenticationSettingsBinder>(_ =>
             new AuthenticationSettingsBinder(configuration));
         services.AddSingleton<ITokenFactory, JwtTokenFactory>();

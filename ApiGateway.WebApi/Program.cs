@@ -1,7 +1,13 @@
-using ApiGateway.WebApi;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text.Encodings.Web;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Users.Grpc.User;
 using static Users.Grpc.User.UserService;
 using static Finance.Grpc.Currency.CurrencyService;
@@ -14,32 +20,40 @@ builder.Services.AddSingleton(provider =>
     return factory.CreateLogger("ApiGateway");
 });
 
-builder.Services.Configure<GrpcServiceOptions>("UserGrpc",
-    builder.Configuration.GetSection("UserGrpc")
-);
+builder.Services
+    .AddAuthentication("NoSignJwt")
+    .AddScheme<AuthenticationSchemeOptions, NoSignatureJwtHandler>("NoSignJwt", null);
 
-builder.Services.Configure<GrpcServiceOptions>("FinanceGrpc",
-    builder.Configuration.GetSection("FinanceGrpc")
-);
+builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token."
+    });
+    c.OperationFilter<AuthorizeCheckOperationFilter>();
+});
+
 builder.Services.AddGrpcClient<UserServiceClient>((services, options) =>
 {
-    options.Address = services.GetRequiredService<IOptionsSnapshot<GrpcServiceOptions>>().Value.Address;
+    options.Address = new Uri(builder.Configuration["UserGrpc:Address"]);
 });
 builder.Services.AddGrpcClient<CurrencyServiceClient>((services, options) =>
 {
-    options.Address = services.GetRequiredService<IOptionsSnapshot<GrpcServiceOptions>>().Value.Address;
+    options.Address = new Uri(builder.Configuration["FinanceGrpc:Address"]);
 });
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -90,7 +104,7 @@ app.MapPost("/api/users/logout", async (LogoutRequest request, UserServiceClient
 
 
 app.MapGet("/api/currencies/favorites",
-        async (HttpContext httpContext, CurrencyServiceClient grpcClient, ILogger logger) =>
+        [Authorize] async (HttpContext httpContext, CurrencyServiceClient grpcClient, ILogger logger) =>
         {
             var authHeader = httpContext.Request.Headers["Authorization"].ToString();
             if (string.IsNullOrWhiteSpace(authHeader) || !authHeader.StartsWith("Bearer "))
@@ -129,6 +143,9 @@ app.MapGet("/api/currencies/favorites",
     .WithName("UserFavouriteCurrencies")
     .WithOpenApi();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.Run();
 
 internal class CurrencyResponse
@@ -138,4 +155,60 @@ internal class CurrencyResponse
     public required string Name { get; init; }
 
     public required string Rate { get; init; }
+}
+
+public class AuthorizeCheckOperationFilter : IOperationFilter
+{
+    public void Apply(OpenApiOperation operation, OperationFilterContext context)
+    {
+        var hasAuthorize =
+            context.MethodInfo.DeclaringType?.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any() == true
+            || context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
+
+        if (hasAuthorize)
+        {
+            operation.Security = new List<OpenApiSecurityRequirement>
+            {
+                new()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                }
+            };
+        }
+    }
+}
+
+public class NoSignatureJwtHandler(
+    IOptionsMonitor<AuthenticationSchemeOptions> options,
+    ILoggerFactory logger,
+    UrlEncoder encoder)
+    : AuthenticationHandler<AuthenticationSchemeOptions>(options, logger, encoder)
+{
+    private static readonly JwtSecurityTokenHandler TokenHandler = new();
+
+    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    {
+        if (!Request.Headers.TryGetValue("Authorization", out var authHeaders))
+            return Task.FromResult(AuthenticateResult.Fail("Missing Authorization Header."));
+
+        var token = authHeaders.ToString().Replace("Bearer ", "");
+
+        var jwt = TokenHandler.ReadJwtToken(token);
+
+        var identity = new ClaimsIdentity(jwt.Claims, Scheme.Name);
+        var principal = new ClaimsPrincipal(identity);
+        var ticket = new AuthenticationTicket(principal, Scheme.Name);
+
+        return Task.FromResult(AuthenticateResult.Success(ticket));
+    }
 }

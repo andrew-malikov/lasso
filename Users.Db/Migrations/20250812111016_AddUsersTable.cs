@@ -17,8 +17,7 @@ namespace Users.Db.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     username = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
-                    password = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
-                    salt = table.Column<string>(type: "text", nullable: false)
+                    password = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                 },
                 constraints: table =>
                 {

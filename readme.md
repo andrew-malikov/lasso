@@ -27,6 +27,10 @@ separte runnable services. Check the docker files and compose.
 
 ### Docker and Docker Compose
 
+```sh
+docker compose up --build --force-recreate
+```
+
 ### Manually
 
 # License

@@ -1,6 +1,6 @@
 namespace Users.Application.Users;
 
-public class User(Guid id, string username, string password, string salt)
+public class User(Guid id, string username, string password)
 {
     public Guid Id { get; init; } = id;
 
@@ -13,9 +13,4 @@ public class User(Guid id, string username, string password, string salt)
     ///     A hashed pair of original password and salt. 
     /// </summary>
     public string Password { get; init; } = password;
-
-    /// <summary>
-    ///     User specific salt for improved password hash tampering.
-    /// </summary>
-    public string Salt { get; init; } = salt;
 }

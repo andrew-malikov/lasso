@@ -4,7 +4,7 @@ namespace Finance.CurrencyUpdater.Application;
 
 public static class HttpClientExtensions
 {
-    public static async Task<T> GetFromXml<T>(this HttpClient client, string requestUri, XmlSerializer serializer,
+    public static async Task<T> GetFromXml<T>(this HttpClient client, Uri requestUri, XmlSerializer serializer,
         CancellationToken token)
     {
         var response = await client.GetAsync(requestUri, token);

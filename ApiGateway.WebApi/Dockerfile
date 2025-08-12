@@ -9,6 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ApiGateway.WebApi/ApiGateway.WebApi.csproj", "ApiGateway.WebApi/"]
 COPY ["Users.Grpc/Users.Grpc.csproj", "Users.Grpc/"]
+COPY ["Finance.Grpc/Finance.Grpc.csproj", "Finance.Grpc/"]
 RUN dotnet restore "ApiGateway.WebApi/ApiGateway.WebApi.csproj"
 COPY . .
 WORKDIR "/src/ApiGateway.WebApi"

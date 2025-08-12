@@ -1,23 +1,24 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Users.Application.Users;
 
 namespace Users.Application.Jwt;
 
-public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : ITokenFactory
+public class JwtTokenFactory(IOptions<AuthenticationSettings> authenticationSettings) : ITokenFactory
 {
     private static readonly JwtSecurityTokenHandler TokenHandler = new();
 
     public string CreateAccessToken(User user)
     {
-        var claims = new List<Claim>(2 + authenticationSettings.Audience.Length)
+        var claims = new List<Claim>(2 + authenticationSettings.Value.Audience.Length)
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
-        foreach (var audience in authenticationSettings.Audience)
+        foreach (var audience in authenticationSettings.Value.Audience)
         {
             claims.Add(new(JwtRegisteredClaimNames.Aud, audience));
         }
@@ -25,9 +26,9 @@ public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : IT
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.Add(authenticationSettings.AccessTokenExpiration),
-            Issuer = authenticationSettings.Issuer,
-            SigningCredentials = new X509SigningCredentials(authenticationSettings.SigningCertificate)
+            Expires = DateTime.UtcNow.Add(authenticationSettings.Value.AccessTokenExpiration),
+            Issuer = authenticationSettings.Value.Issuer,
+            SigningCredentials = new X509SigningCredentials(authenticationSettings.Value.SigningCertificate)
         };
 
         var token = TokenHandler.CreateToken(tokenDescriptor);
@@ -36,24 +37,24 @@ public class JwtTokenFactory(AuthenticationSettings authenticationSettings) : IT
 
     public (string token, DateTimeOffset expiresAt) CreateRefreshToken(User user)
     {
-        var claims = new List<Claim>(2 + authenticationSettings.Audience.Length)
+        var claims = new List<Claim>(2 + authenticationSettings.Value.Audience.Length)
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
-        foreach (var audience in authenticationSettings.Audience)
+        foreach (var audience in authenticationSettings.Value.Audience)
         {
-            claims.Add(new(JwtRegisteredClaimNames.Aud, audience));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Aud, audience));
         }
 
-        var expiresAt = DateTime.UtcNow.Add(authenticationSettings.RefreshTokenExpiration);
+        var expiresAt = DateTime.UtcNow.Add(authenticationSettings.Value.RefreshTokenExpiration);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = expiresAt,
-            Issuer = authenticationSettings.Issuer,
-            SigningCredentials = new X509SigningCredentials(authenticationSettings.SigningCertificate)
+            Issuer = authenticationSettings.Value.Issuer,
+            SigningCredentials = new X509SigningCredentials(authenticationSettings.Value.SigningCertificate)
         };
 
         var token = TokenHandler.CreateToken(tokenDescriptor);

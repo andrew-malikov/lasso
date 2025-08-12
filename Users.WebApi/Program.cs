@@ -14,7 +14,5 @@ builder.Services.AddGrpc(o => { o.Interceptors.Add<ExceptionHandlingInterceptor>
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
 app.MapGrpcService<UserGrpcService>();
 app.Run();

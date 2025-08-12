@@ -12,7 +12,7 @@ using Users.Db;
 namespace Users.Db.Migrations
 {
     [DbContext(typeof(UsersDbContext))]
-    [Migration("20250808110329_AddUsersTable")]
+    [Migration("20250812111016_AddUsersTable")]
     partial class AddUsersTable
     {
         /// <inheritdoc />
@@ -34,14 +34,9 @@ namespace Users.Db.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("character varying(40)")
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)")
                         .HasColumnName("password");
-
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("salt");
 
                     b.Property<string>("Username")
                         .IsRequired()

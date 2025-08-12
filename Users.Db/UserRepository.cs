@@ -19,14 +19,18 @@ public class UserRepository(UsersDbContext dbContext) : IUserRepository
         }
     }
 
-    public Task<User> Get(string username, CancellationToken token = default)
+    public Task<User?> Get(string username, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        return dbContext.Users
+            .AsNoTracking()
+            .Where(u => u.Username == username)
+            .Select(u => new User(u.Id, u.Username, u.Password))
+            .FirstOrDefaultAsync(token);
     }
 
     public Task<bool> Any(string username, CancellationToken token = default)
     {
-        throw new NotImplementedException();
+        return dbContext.Users.AnyAsync(u => u.Username == username, token);
     }
 
 
@@ -49,7 +53,6 @@ internal static class UserExtensions
         {
             Id = user.Id,
             Password = user.Password,
-            Salt = user.Salt,
             Username = user.Username
         };
     }

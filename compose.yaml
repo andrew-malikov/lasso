@@ -6,7 +6,7 @@
       dockerfile: ApiGateway.WebApi/Dockerfile
     environment:
       UserGrpc__Address: http://users.webapi:8080
-      FinanceGrpc_Address: http://finance.webapi:8080
+      FinanceGrpc__Address: http://finance.webapi:8080
     ports:
       - "8080:8080"
   
@@ -16,9 +16,9 @@
       context: .
       dockerfile: Users.WebApi/Dockerfile
     environment:
-      UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
-      Authentication__VerifyingCertificate: "/app/certificates/verifying.pem"
-      Authentication__SigningCertificate__Path: "/app/certificates/signing.pfx"
+      ConnectionStrings__UsersDbContext: Host=db;Database=users;Username=sudome;Password=superpass
+      Authentication__VerifyingCertificate: "/app/certificates/auth_verifying.pem"
+      Authentication__SigningCertificate__Path: "/app/certificates/auth_signing.pfx"
       Authentication__SigningCertificate__Password: "password"
     volumes:
       - ./certificates:/app/certificates:ro
@@ -44,14 +44,24 @@
       context: .
       dockerfile: Finance.WebApi/Dockerfile
     environment:
-      FinanceDbContext: Host=db;Database=finance;Username=sudome;Password=superpass
-      Authentication__VerifyingCertificate: "/app/certificates/verifying.pem"
+      ConnectionStrings__FinanceDbContext: Host=db;Database=finance;Username=sudome;Password=superpass
+      Authentication__VerifyingCertificate: "/app/certificates/auth_verifying.pem"
     volumes:
       - ./certificates:/app/certificates:ro
     depends_on:
       - db
     expose:
       - 8080
+  
+  finance.currency.updater:
+    image: finance.currency.updater
+    build:
+      context: .
+      dockerfile: Finance.CurrencyUpdater/Dockerfile
+    environment:
+      ConnectionStrings__FinanceDbContext: Host=db;Database=finance;Username=sudome;Password=superpass
+    depends_on:
+      - db
 
   db.finance.migrator:
     image: finance.db.migrator
