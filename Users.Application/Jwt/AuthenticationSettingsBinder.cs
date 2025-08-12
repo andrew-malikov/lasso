@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Users.Application.Jwt;
 
-public class AuthenticationSettingsBinder(IConfiguration configuration) : IConfigureOptions<AuthenticationSettings>
+internal sealed class AuthenticationSettingsBinder(IConfiguration configuration) : IConfigureOptions<AuthenticationSettings>
 {
     public void Configure(AuthenticationSettings settings)
     {

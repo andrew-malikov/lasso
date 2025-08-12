@@ -1,6 +1,6 @@
 namespace Users.Application.Users;
 
-public class User(Guid id, string username, string password)
+public sealed class User(Guid id, string username, string password)
 {
     public Guid Id { get; init; } = id;
 

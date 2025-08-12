@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Users.Application.Users;
 
-public record LoginRequest
+public sealed record LoginRequest
 {
     [Required(AllowEmptyStrings = false)]
     [MinLength(3), MaxLength(60)]

@@ -1,6 +1,6 @@
 namespace Users.Application.Users;
 
-public class UserTokens
+public sealed class UserTokens
 {
     public required Guid UserId { get; init; }
 

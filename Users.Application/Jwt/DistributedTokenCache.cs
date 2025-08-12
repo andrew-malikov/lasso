@@ -2,7 +2,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Users.Application.Jwt;
 
-public class DistributedTokenCache(IDistributedCache cache) : ITokenCache
+internal sealed class DistributedTokenCache(IDistributedCache cache) : ITokenCache
 {
     public Task StoreRefreshToken(string refreshToken, DateTimeOffset expiresAt, CancellationToken token = default)
     {

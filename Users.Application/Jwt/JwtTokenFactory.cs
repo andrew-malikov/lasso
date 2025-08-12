@@ -6,7 +6,7 @@ using Users.Application.Users;
 
 namespace Users.Application.Jwt;
 
-public class JwtTokenFactory(IOptions<AuthenticationSettings> authenticationSettings) : ITokenFactory
+internal sealed class JwtTokenFactory(IOptions<AuthenticationSettings> authenticationSettings) : ITokenFactory
 {
     private static readonly JwtSecurityTokenHandler TokenHandler = new();
 

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Users.Application.Users;
 
-public class UserDraft
+public sealed class UserDraft
 {
     /// <summary>
     ///     Unique username.

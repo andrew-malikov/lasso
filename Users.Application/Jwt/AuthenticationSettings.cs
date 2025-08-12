@@ -2,7 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Users.Application.Jwt;
 
-public class AuthenticationSettings
+internal sealed class AuthenticationSettings
 {
     public X509Certificate2 VerifyingCertificate { get; set; }
 

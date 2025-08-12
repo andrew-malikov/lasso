@@ -4,7 +4,7 @@ using Users.Application.Jwt;
 
 namespace Users.Application.Users;
 
-public class UserService(
+internal sealed class UserService(
     IUserRepository repository,
     IPasswordHasher<object> hasher,
     ITokenFactory tokenFactory,

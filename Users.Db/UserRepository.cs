@@ -4,7 +4,7 @@ using Users.Application.Users;
 
 namespace Users.Db;
 
-public class UserRepository(UsersDbContext dbContext) : IUserRepository
+internal sealed class UserRepository(UsersDbContext dbContext) : IUserRepository
 {
     public async Task Add(User user, CancellationToken token = default)
     {
